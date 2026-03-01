@@ -1,0 +1,15 @@
+services:
+  neodash:
+    build: .
+    container_name: neodash
+    ports:
+      - "3000:3000"
+    volumes:
+      - neodash-data:/app/data
+    environment:
+      - DATABASE_PATH=/app/data/data.db
+      - UPLOADS_PATH=/app/data/uploads
+    restart: unless-stopped
+
+volumes:
+  neodash-data:

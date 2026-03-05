@@ -60,6 +60,7 @@ export function IconPicker({ value, onChange, serviceUrl, onColorDetected, initi
     return "favicon";
   });
   const [search, setSearch] = useState("");
+  const [uploadedFavicons, setUploadedFavicons] = useState<{ filename: string; url: string; label: string }[]>([]);
   const [customUrl, setCustomUrl] = useState(
     (value.startsWith("http") && !value.startsWith("https://www.google.com/s2/favicons")) ||
     value.startsWith("/api/uploads/icon-") ? value : ""
@@ -113,8 +114,19 @@ export function IconPicker({ value, onChange, serviceUrl, onColorDetected, initi
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serviceUrl, mode]);
 
+  useEffect(() => {
+    fetch("/api/uploads")
+      .then((r) => r.json())
+      .then(setUploadedFavicons)
+      .catch(() => {});
+  }, []);
+
   const filteredIcons = ICON_OPTIONS.filter((name) =>
     name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredFavicons = uploadedFavicons.filter((f) =>
+    f.label.toLowerCase().includes(search.toLowerCase())
   );
 
   const tabClass = (tab: Mode) =>
@@ -190,7 +202,7 @@ export function IconPicker({ value, onChange, serviceUrl, onColorDetected, initi
             onChange={(e) => setSearch(e.target.value)}
             className="w-full px-3 py-1.5 text-sm bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
           />
-          <div className="grid grid-cols-6 gap-1.5 max-h-40 overflow-y-auto p-1">
+          <div className="grid grid-cols-6 gap-1.5 max-h-48 overflow-y-auto p-1">
             {filteredIcons.map((name) => {
               const Icon = getLucideIcon(name) || Globe;
               return (
@@ -209,6 +221,34 @@ export function IconPicker({ value, onChange, serviceUrl, onColorDetected, initi
                 </button>
               );
             })}
+            {filteredFavicons.length > 0 && (
+              <>
+                <div className="col-span-6 pt-1 pb-0.5">
+                  <p className="text-xs text-gray-500">Gespeicherte Favicons</p>
+                </div>
+                {filteredFavicons.map((f) => (
+                  <button
+                    key={f.filename}
+                    type="button"
+                    onClick={() => {
+                      onChange(f.url);
+                      if (onColorDetected) {
+                        getDominantColor(f.url).then((c) => { if (c) onColorDetected(c); });
+                      }
+                    }}
+                    title={f.label}
+                    className={`p-1.5 rounded-lg transition-colors flex items-center justify-center ${
+                      value === f.url
+                        ? "bg-blue-600"
+                        : "bg-gray-800 hover:bg-gray-700"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={f.url} alt={f.label} className="w-5 h-5 rounded object-contain" />
+                  </button>
+                ))}
+              </>
+            )}
           </div>
         </div>
       )}

@@ -111,7 +111,8 @@ export function ServiceDialog({ open, service, onSave, onClose }: Props) {
               onColorDetected={handleColorChange}
               initialMode={(() => {
                 const ic = service?.icon ?? "";
-                if (ic.startsWith("/api/uploads/favicon-") || ic.startsWith("https://www.google.com/s2/favicons")) return "favicon";
+                if (ic.startsWith("/api/uploads/favicon-")) return "icons";
+                if (ic.startsWith("https://www.google.com/s2/favicons")) return "favicon";
                 if (ic.startsWith("http") || ic.startsWith("/api/uploads/icon-")) return "url";
                 if (service) return "icons";
                 return "favicon";

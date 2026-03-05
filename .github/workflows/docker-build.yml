@@ -21,7 +21,7 @@ jobs:
 
     - name: Docker meta  # <-- NEU: Generiert sichere Tags automatisch
       id: meta
-      uses: docker/metadata-action@v6
+      uses: docker/metadata-action@v5
       with:
         images: ${{ env.REGISTRY }}/${{ github.repository }}
         tags: |

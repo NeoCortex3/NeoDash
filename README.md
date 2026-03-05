@@ -5,8 +5,8 @@ Homeserver Dashboard das einfach funktioniert.<br>
 <br>
 <img width="448" height="778" alt="grafik" src="https://github.com/user-attachments/assets/e12ce086-6d95-45e7-bf83-f2b35f1ee5b9" />
 <br>
-<b>Schnellstart</b><br>
 <br>
+<b>Schnellstart</b><br>
 Docker Compose:<br>
 <pre>
 services:

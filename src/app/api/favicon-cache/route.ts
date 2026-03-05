@@ -60,13 +60,15 @@ export async function POST(request: NextRequest) {
     const base = `${parsed.protocol}//${parsed.host}`;
 
     // Step 1: Fetch HTML and look for <link rel="icon">
+    // Use htmlRes.url as base to correctly resolve relative URLs after redirects
     try {
       const htmlRes = await fetch(url, { signal: AbortSignal.timeout(5000) });
       if (htmlRes.ok) {
         const ct = htmlRes.headers.get("content-type") ?? "";
         if (ct.includes("html")) {
           const html = await htmlRes.text();
-          const iconUrl = extractIconHref(html, base);
+          const finalBase = htmlRes.url || base;
+          const iconUrl = extractIconHref(html, finalBase);
           if (iconUrl) {
             const buf = await fetchImage(iconUrl);
             if (buf) return buf;

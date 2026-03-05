@@ -23,3 +23,5 @@ volumes:
   data:
   uploads:
   </pre>
+
+Gemacht mit <img width="12" height="12" alt="grafik" src="https://github.com/user-attachments/assets/f54c7386-2c3b-4cc8-a3fb-89f12599d3cb" /> von Neo und Claude.ai

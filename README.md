@@ -3,9 +3,10 @@ Homeserver Dashboard das einfach funktioniert.<br>
 <br>
 <img width="1157" height="519" alt="grafik" src="https://github.com/user-attachments/assets/8508d627-bc42-4637-a256-e0ee3f9eb6ef" /><br>
 <br>
-<img width="477" height="812" alt="grafik" src="https://github.com/user-attachments/assets/8b18c8c3-0997-4585-ac34-8b87edc83776" /><br>
+<img width="448" height="778" alt="grafik" src="https://github.com/user-attachments/assets/e12ce086-6d95-45e7-bf83-f2b35f1ee5b9" />
 <br>
 <b>Schnellstart</b><br>
+<br>
 Docker Compose:<br>
 <pre>
 services:

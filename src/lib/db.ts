@@ -23,6 +23,11 @@ sqlite.exec(`
     background_image TEXT NOT NULL DEFAULT '',
     bg_opacity REAL NOT NULL DEFAULT 1
   );
+  CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0
+  );
 `);
 
 // Idempotent column migration (ignored if column already exists)
@@ -38,6 +43,11 @@ try {
 }
 try {
   sqlite.exec(`ALTER TABLE settings ADD COLUMN open_in_new_tab INTEGER NOT NULL DEFAULT 0;`);
+} catch {
+  // Column already exists
+}
+try {
+  sqlite.exec(`ALTER TABLE services ADD COLUMN category_id INTEGER;`);
 } catch {
   // Column already exists
 }

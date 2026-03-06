@@ -1,5 +1,11 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 
+export const categories = sqliteTable("categories", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
 export const settings = sqliteTable("settings", {
   id: integer("id").primaryKey(),
   backgroundImage: text("background_image").notNull().default(""),
@@ -16,6 +22,7 @@ export const services = sqliteTable("services", {
   sortOrder: integer("sort_order").notNull().default(0),
   hidden: integer("hidden").notNull().default(0),
   glassEffect: integer("glass_effect").notNull().default(1),
+  categoryId: integer("category_id"),
   createdAt: text("created_at")
     .notNull()
     .$defaultFn(() => new Date().toISOString()),

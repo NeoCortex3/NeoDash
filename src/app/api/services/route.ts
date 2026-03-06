@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
       color: body.color || "#3b82f6",
       sortOrder: nextOrder,
       glassEffect: body.glassEffect === false ? 0 : 1,
+      categoryId: body.categoryId ?? null,
     })
     .returning()
     .get();

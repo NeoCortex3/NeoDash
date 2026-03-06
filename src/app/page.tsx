@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { services, settings } from "@/lib/schema";
+import { services, settings, categories } from "@/lib/schema";
 import { asc, eq } from "drizzle-orm";
 import { ServiceGrid } from "@/components/ServiceGrid";
 
@@ -10,6 +10,12 @@ export default function DashboardPage() {
     .select()
     .from(services)
     .orderBy(asc(services.sortOrder))
+    .all();
+
+  const allCategories = db
+    .select()
+    .from(categories)
+    .orderBy(asc(categories.sortOrder))
     .all();
 
   let settingsRow = db.select().from(settings).where(eq(settings.id, 1)).get();
@@ -23,6 +29,7 @@ export default function DashboardPage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <ServiceGrid
           initialServices={allServices}
+          initialCategories={allCategories}
           initialBg={settingsRow.backgroundImage}
           initialBgOpacity={settingsRow.bgOpacity ?? 1}
           initialOpenInNewTab={Boolean(settingsRow.openInNewTab)}

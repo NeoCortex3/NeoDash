@@ -1,12 +1,13 @@
 "use client";
 
-import { Plus, Settings, Pencil } from "lucide-react";
+import { Plus, Settings, Pencil, FolderPlus } from "lucide-react";
 
 type Props = {
   editMode: boolean;
   onToggleEditMode: () => void;
   onAddService: () => void;
   onOpenSettings: () => void;
+  onAddCategory: () => void;
 };
 
 export function DashboardHeader({
@@ -14,11 +15,21 @@ export function DashboardHeader({
   onToggleEditMode,
   onAddService,
   onOpenSettings,
+  onAddCategory,
 }: Props) {
   return (
     <header className="flex items-center justify-between mb-8">
       <h1 className="text-2xl font-bold text-white">Neodash</h1>
       <div className="flex gap-2">
+        {editMode && (
+          <button
+            onClick={onAddCategory}
+            className="p-2.5 rounded-xl bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+            title="Kategorie hinzufügen"
+          >
+            <FolderPlus size={18} />
+          </button>
+        )}
         <button
           onClick={onToggleEditMode}
           className={`p-2.5 rounded-xl transition-colors ${

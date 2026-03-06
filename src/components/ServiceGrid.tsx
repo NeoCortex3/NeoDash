@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ServerOff } from "lucide-react";
 import {
   DndContext,
   closestCenter,
+  pointerWithin,
   PointerSensor,
   useSensor,
   useSensors,
   DragOverlay,
   type DragEndEvent,
   type DragStartEvent,
+  type CollisionDetection,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { ServiceCard } from "./ServiceCard";
@@ -208,6 +210,16 @@ export function ServiceGrid({
 
   // ─── Drag & Drop ─────────────────────────────────────────────────────────────
 
+  // Karten (number IDs) bevorzugen, damit Reorder innerhalb Kategorie funktioniert.
+  // Kategorie-Zonen (string IDs) greifen, wenn Zeiger im gesamten Bereich ist.
+  const collisionDetectionStrategy: CollisionDetection = useCallback((args) => {
+    const pointerCollisions = pointerWithin(args);
+    const cardCollisions = pointerCollisions.filter((c) => typeof c.id === "number");
+    if (cardCollisions.length > 0) return cardCollisions;
+    if (pointerCollisions.length > 0) return pointerCollisions;
+    return closestCenter(args);
+  }, []);
+
   const handleDragStart = (event: DragStartEvent) => {
     const dragged = services.find((s) => s.id === event.active.id);
     setActiveService(dragged ?? null);
@@ -352,7 +364,7 @@ export function ServiceGrid({
       ) : (
         <DndContext
           sensors={sensors}
-          collisionDetection={closestCenter}
+          collisionDetection={collisionDetectionStrategy}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >

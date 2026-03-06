@@ -320,6 +320,8 @@ export function ServiceGrid({
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: bgOpacity,
+            transform: "translateZ(0)",
+            willChange: "transform",
           }}
         />
       )}

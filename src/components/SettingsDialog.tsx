@@ -143,6 +143,26 @@ export function SettingsDialog({ open, currentBg, currentBgOpacity, currentOpenI
               className="w-full accent-blue-500"
             />
           </div>
+
+          {/* Preset-Hintergrundbilder */}
+          <div>
+            <label className="block text-sm text-gray-400 mb-1.5">Vorlagen</label>
+            <div className="grid grid-cols-4 gap-2">
+              {["/bg1.jpg", "/bg2.jpg", "/bg3.jpg", "/bg4.jpg"].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setUrl(preset)}
+                  className={`rounded-lg overflow-hidden border-2 transition-colors h-16 ${
+                    url === preset ? "border-blue-500" : "border-gray-700 hover:border-gray-500"
+                  }`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={preset} alt={preset} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <button

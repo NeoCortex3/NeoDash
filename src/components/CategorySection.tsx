@@ -102,7 +102,8 @@ export function CategorySection({
             </>
           ) : (
             <>
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider"
+                  style={{ textShadow: "1px 1px 2px black" }}>
                 {category.name}
               </h2>
               {editMode && (

@@ -31,6 +31,7 @@ type Props = {
   initialBg: string;
   initialBgOpacity: number;
   initialOpenInNewTab: boolean;
+  initialTitle: string;
 };
 
 export function ServiceGrid({
@@ -39,6 +40,7 @@ export function ServiceGrid({
   initialBg,
   initialBgOpacity,
   initialOpenInNewTab,
+  initialTitle,
 }: Props) {
   const [services, setServices] = useState<Service[]>(initialServices);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
@@ -53,6 +55,7 @@ export function ServiceGrid({
   const [bgOpacity, setBgOpacity] = useState(initialBgOpacity ?? 1);
   const [openInNewTab, setOpenInNewTab] = useState(initialOpenInNewTab);
   const [activeService, setActiveService] = useState<Service | null>(null);
+  const [title, setTitle] = useState(initialTitle);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -194,11 +197,39 @@ export function ServiceGrid({
 
   // ─── Settings ────────────────────────────────────────────────────────────────
 
+ const handleTitleBlur = async () => {
+    if (title === "") return; // Prevent empty title if desired, or just proceed
+
+    const res = await fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        title: title,
+        backgroundImage: bgUrl, 
+        bgOpacity: bgOpacity, 
+        openInNewTab: openInNewTab ? 1 : 0 
+      }),
+    });
+
+    if (res.ok) {
+      // Title is already updated in state via handleTitleChange
+    }
+  };
+
+  const handleTitleChange = (newTitle: string) => {
+    setTitle(newTitle);
+  };
+
   const handleSaveSettings = async (url: string, opacity: number, newOpenInNewTab: boolean) => {
     const res = await fetch("/api/settings", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ backgroundImage: url, bgOpacity: opacity, openInNewTab: newOpenInNewTab ? 1 : 0 }),
+      body: JSON.stringify({ 
+        title: title,
+        backgroundImage: url, 
+        bgOpacity: opacity, 
+        openInNewTab: newOpenInNewTab ? 1 : 0 
+      }),
     });
     if (res.ok) {
       setBgUrl(url);
@@ -339,12 +370,15 @@ export function ServiceGrid({
       )}
 
       <DashboardHeader
-        editMode={editMode}
-        onToggleEditMode={() => setEditMode(!editMode)}
-        onAddService={handleAdd}
-        onOpenSettings={() => setSettingsOpen(true)}
-        onAddCategory={() => setAddingCategory(true)}
-      />
+         editMode={editMode}
+         title={title}
+         onTitleChange={handleTitleChange}
+         onTitleBlur={handleTitleBlur}
+         onToggleEditMode={() => setEditMode(!editMode)}
+         onAddService={handleAdd}
+         onOpenSettings={() => setSettingsOpen(true)}
+         onAddCategory={() => setAddingCategory(true)}
+       />
 
       {editMode && addingCategory && (
         <AddCategoryInput

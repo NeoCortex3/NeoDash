@@ -8,6 +8,9 @@ type Props = {
   onAddService: () => void;
   onOpenSettings: () => void;
   onAddCategory: () => void;
+  title: string;
+  onTitleChange: (newTitle: string) => void;
+  onTitleBlur: () => void;
 };
 
 export function DashboardHeader({
@@ -16,10 +19,26 @@ export function DashboardHeader({
   onAddService,
   onOpenSettings,
   onAddCategory,
+  title,
+  onTitleChange,
+  onTitleBlur,
 }: Props) {
   return (
     <header className="flex items-center justify-between mb-8">
-      <h1 className="text-2xl font-bold text-white">Neodash</h1>
+      <div className="flex-1 mr-4">
+        {editMode ? (
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => onTitleChange(e.target.value)}
+            onBlur={onTitleBlur}
+            autoFocus
+            className="bg-gray-800 text-2xl font-bold text-white px-2 py-1 rounded border border-blue-500 outline-none w-full max-w-md"
+          />
+        ) : (
+          <h1 className="text-2xl font-bold text-white truncate">{title}</h1>
+        )}
+      </div>
       <div className="flex gap-2">
         {editMode && (
           <button

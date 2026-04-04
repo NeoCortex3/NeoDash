@@ -11,6 +11,7 @@ export const settings = sqliteTable("settings", {
   backgroundImage: text("background_image").notNull().default(""),
   bgOpacity: real("bg_opacity").notNull().default(1),
   openInNewTab: integer("open_in_new_tab").notNull().default(0),
+  title: text("title").notNull().default("Neodash"),
 });
 
 export const services = sqliteTable("services", {

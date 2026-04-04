@@ -20,21 +20,22 @@ export default function DashboardPage() {
 
   let settingsRow = db.select().from(settings).where(eq(settings.id, 1)).get();
   if (!settingsRow) {
-    db.insert(settings).values({ id: 1, backgroundImage: "", bgOpacity: 1, openInNewTab: 0 }).run();
-    settingsRow = { id: 1, backgroundImage: "", bgOpacity: 1, openInNewTab: 0 };
-  }
+     db.insert(settings).values({ id: 1, backgroundImage: "", bgOpacity: 1, openInNewTab: 0, title: "Neodash" }).run();
+     settingsRow = { id: 1, backgroundImage: "", bgOpacity: 1, openInNewTab: 0, title: "Neodash" };
+   }
 
-  return (
-    <main className="min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <ServiceGrid
-          initialServices={allServices}
-          initialCategories={allCategories}
-          initialBg={settingsRow.backgroundImage}
-          initialBgOpacity={settingsRow.bgOpacity ?? 1}
-          initialOpenInNewTab={Boolean(settingsRow.openInNewTab)}
-        />
-      </div>
-    </main>
-  );
-}
+   return (
+     <main className="min-h-screen">
+       <div className="max-w-6xl mx-auto px-4 py-8">
+         <ServiceGrid
+           initialServices={allServices}
+           initialCategories={allCategories}
+           initialBg={settingsRow.backgroundImage}
+           initialBgOpacity={settingsRow.bgOpacity ?? 1}
+           initialOpenInNewTab={Boolean(settingsRow.openInNewTab)}
+           initialTitle={settingsRow.title}
+         />
+       </div>
+     </main>
+   );
+ }
